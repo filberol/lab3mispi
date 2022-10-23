@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <!--Meta-->
+        <meta charset="UTF-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <!--Css-->
+        <h:outputStylesheet library="css" name="style.css"/>
+        <h:outputStylesheet library="css" name="night.css"/>
+        <!--Icon-->
+        <link rel="icon" href="#{resource['img/favicon.ico.svg']}"/>
+        <!--External-->
+        <ui:insert name="head">
+            <title>Web Lab#3</title>
+        </ui:insert>
+    </h:head>
+
+    <h:body>
+        <!--Header-->
+        <div class="header">
+            <div class="nickname header-block">
+                <img class="avatar"
+                     src="https://sun9-43.userapi.com/s/v1/ig2/OvRRgO1KU9OwBb2mTRp5ywllEQ2peh8jbEOlAmgUqqDWyr3xaVRmu6v8sHpu3rdIg0m8MzluNQzpsXdFIOQn2le-.jpg?size=200x200&amp;quality=95&amp;crop=351,0,1816,1818&amp;ava=1"
+                     alt="Avatar" />
+                <a href="https://t.me/filberol">
+                    <p>@filberol</p>
+                </a>
+                <p>Vadim Mikhu</p>
+            </div>
+            <div class="buttons">
+                <ul>
+                    <li class="header-block">P32301</li>
+                    <li class="header-block">#330500</li>
+                </ul>
+                <button class="menu-button header-block">
+                    <h:graphicImage styleClass="menu-button" library="img" name="menu-button.svg" alt="Menu" />
+                </button>
+            </div>
+        </div>
+        <!--Description-->
+        <div id="description">
+            <div class="desc-header">
+                <div class="header-block">Выполнил: Миху Вадим Дмитриевич</div>
+                <div class="header-block">s339106</div>
+                <div class="header-block">P32301</div>
+                <div class="header-block">#330500</div>
+                <a href="https://github.com/filberol" class="header-block">GitHub</a>
+                <div id="night-mode" class="header-block"><div id="dragger">'</div></div>
+            </div>
+            <div class="desc-text">
+                Разработать приложение на базе JavaServer Faces Framework, которое осуществляет проверку попадания точки в заданную область на координатной плоскости.
+                Приложение должно включать в себя 2 facelets-шаблона - стартовую страницу и основную страницу приложения, а также набор управляемых бинов (managed beans), реализующих логику на стороне сервера.
+            </div>
+            <div class="desc-text">Стартовая страница должна содержать следующие элементы:</div>
+            <ul>
+                <li>Набор компонентов для задания координат точки и радиуса области в соответствии с вариантом задания. Может потребоваться использование дополнительных библиотек компонентов - ICEfaces (префикс "ace") и PrimeFaces (префикс "p"). Если компонент допускает ввод заведомо некорректных данных (таких, например, как буквы в координатах точки или отрицательный радиус), то приложение должно осуществлять их валидацию.</li>
+                <li>Динамически обновляемую картинку, изображающую область на координатной плоскости в соответствии с номером варианта и точки, координаты которых были заданы пользователем. Клик по картинке должен инициировать сценарий, осуществляющий определение координат новой точки и отправку их на сервер для проверки её попадания в область. Цвет точек должен зависить от факта попадания / непопадания в область. Смена радиуса также должна инициировать перерисовку картинки.</li>
+                <li>Таблицу со списком результатов предыдущих проверок.</li>
+                <li>Ссылку, позволяющую вернуться на стартовую страницу.</li>
+            </ul>
+            <div class="desc-text">Дополнительные требования к приложению: </div>
+            <ul>
+                <li>Все результаты проверки должны сохраняться в базе данных под управлением СУБД Oracle.</li>
+                <li>Для доступа к БД необходимо использовать ORM EclipseLink.</li>
+                <li>Для управления списком результатов должен использоваться Session-scoped Managed Bean.</li>
+                <li>Конфигурация управляемых бинов должна быть задана с помощью аннотаций.</li>
+                <li>Правила навигации между страницами приложения должны быть заданы в отдельном конфигурационном файле.</li>
+            </ul>
+        </div>
+
+        <ui:insert name="content">P.S. Здесь сыра нет.</ui:insert>
+
+        <h:outputScript library="js" name="jquery-3.6.0.js"/>
+        <h:outputScript library="js" name="nightModeHandler.js"/>
+        <h:outputScript library="js" name="buttonsHandler.js"/>
+        <ui:insert name="scripts"/>
+    </h:body>
+</html>

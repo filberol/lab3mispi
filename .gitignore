@@ -1,0 +1,10 @@
+.gradle
+.idea
+settings.gradle
+build/
+gradle/
+gradlew.bat
+gradlew
+src/test/
+src/main/webapp/resources/css/*.css
+src/main/webapp/resources/css/*.map
