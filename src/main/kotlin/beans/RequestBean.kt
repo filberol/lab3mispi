@@ -1,14 +1,14 @@
 package beans
 
 import HitRecord
-import jakarta.enterprise.context.RequestScoped
+import jakarta.enterprise.context.SessionScoped
 import jakarta.inject.Inject
 import jakarta.inject.Named
 import java.io.Serializable
 import java.time.ZonedDateTime
 
 @Named
-@RequestScoped
+@SessionScoped
 open class RequestBean: Serializable {
     @Inject
     private lateinit var personalBean: PersonalBean

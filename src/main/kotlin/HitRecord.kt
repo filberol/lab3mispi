@@ -39,7 +39,8 @@ class HitRecord: Serializable {
     fun setResult(value: String) { result = value }
     fun getResult() = result
 
-    fun cordsToString() = "$cordX, $cordY, $cordR"
+    fun Float.format(digits: Int) = "%.${digits}f".format(this)
+    fun cordsToString() = "${cordX!!.format(2)}, ${cordY!!.format(2)}, ${cordR!!.format(2)}"
     fun timeFormatted(): String =
         time!!.toLocalTime().format(DateTimeFormatter.ofPattern("HH:mm:ss"))
     fun execFormatted() = "$execution ms"

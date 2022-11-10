@@ -2,7 +2,6 @@ package beans
 
 import HitRecord
 import jakarta.annotation.PostConstruct
-import jakarta.annotation.PreDestroy
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Named
 import jakarta.persistence.*

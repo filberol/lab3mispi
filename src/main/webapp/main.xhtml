@@ -5,7 +5,8 @@
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
 
 <ui:composition template="WEB-INF/template.xhtml">
     <ui:define name="head">
@@ -16,7 +17,17 @@
         <div class="content">
             <div class="target-container">
                 <div class="target glass canvas">
+                    <p:remoteCommand name="rc" action="#{canvas.execute}" oncomplete="console.log('executed')" update="results"/>
                     <canvas id="graph" width="300" height="300"/>
+                    <script>
+                        const canvass = document.getElementById("graph")
+                        canvass.addEventListener("click", function (event) {
+                            const rect = canvass.getBoundingClientRect()
+                            const x = event.clientX - rect.left
+                            const y = event.clientY - rect.top
+                            rc([{name: 'x', value: (x/canvass.clientWidth - 0.5) * 2}, {name: 'y', value: (0.5 - y/canvass.clientHeight) * 2}])
+                        })
+                    </script>
                 </div>
                 <div class="target glass">
                     <div class="content-text bordered">Выбор значений</div>
