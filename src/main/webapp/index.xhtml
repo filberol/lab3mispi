@@ -2,19 +2,31 @@
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
 
 <ui:composition template="WEB-INF/template.xhtml">
-<!--    <ui:define name="content">-->
-<!--        <div class="target-container">-->
-<!--            <div class="target glass">-->
-<!--                <canvas id="graph" width="500" height="500"/>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </ui:define>-->
-<!--    <ui:define name="scripts">-->
-<!--        <h:outputScript library="js" name="watches.js"/>-->
-<!--    </ui:define>-->
+    <ui:define name="head">
+        <title>Web Lab #3 - Стартовая страница </title>
+        <h:outputStylesheet library="css" name="indexContent.css"/>
+    </ui:define>
+    <ui:define name="content">
+        <div class="table-container">
+            <div class="target glass">
+                <canvas id="graph" width="500" height="500"/>
+            </div>
+            <div class="watch-panel">
+                <h:link id="mainLink"
+                        styleClass="header-block"
+                        outcome="goMain">
+                    На главную
+                </h:link>
+            </div>
+        </div>
+    </ui:define>
+    <ui:define name="scripts">
+        <h:outputScript library="js" name="watches.js"/>
+    </ui:define>
 </ui:composition>
 
 </html>

@@ -34,6 +34,7 @@
             </div>
             <div class="buttons">
                 <ul>
+                    <ui:insert name="head blocks"/>
                     <li class="header-block">P32301</li>
                     <li class="header-block">#330500</li>
                 </ul>
@@ -76,8 +77,8 @@
         <ui:insert name="content">P.S. Здесь сыра нет.</ui:insert>
 
         <h:outputScript library="js" name="jquery-3.6.0.js"/>
-        <h:outputScript library="js" name="nightModeHandler.js"/>
-        <h:outputScript library="js" name="buttonsHandler.js"/>
+        <h:outputScript library="js" name="nightMode.js"/>
+        <h:outputScript library="js" name="buttons.js"/>
         <ui:insert name="scripts"/>
     </h:body>
 </html>
