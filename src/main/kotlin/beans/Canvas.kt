@@ -16,11 +16,9 @@ class Canvas: Serializable {
     fun execute() {
         val param1: Float = FacesContext.getCurrentInstance().externalContext.requestParameterMap["x"]!!.toFloat()
         val param2: Float = FacesContext.getCurrentInstance().externalContext.requestParameterMap["y"]!!.toFloat()
-        val newR = 3
         println("x: $param1, y: $param2")
-        formBean.setR(newR.toString())
-        formBean.setX(arrayOf(param1 * newR))
-        formBean.setY((param2 * newR).toString())
+        formBean.setX(arrayOf(param1 * 3))
+        formBean.setY((param2 * 3).toString())
         formBean.applyHit()
     }
 }

@@ -3,22 +3,22 @@ const ctx = canvas.getContext("2d");
 const height = canvas.height
 const width = canvas.width
 
-draw()
+draw(1)
 
-function draw() {
+function draw(radio) {
     ctx.fillStyle = "rgba(255, 255, 255, 1)"
     ctx.fillRect(0, 0, width, height)
 
     //draw figures
     ctx.strokeStyle = "rgba(30,107,195,0.9)"
     ctx.fillStyle = "rgba(73,158,255,0.9)"
-    drawTriangle(width/2, height/2, width, height/2, width/2, 0)
+    drawTriangle(width/2, height/2, width/2 + width/2*radio/3, height/2, width/2, height/2 - height/2*radio/3)
     ctx.stroke()
-    drawRectangle(0, height/2, width/2, height/2, width/2, height/4, 0, height/4)
+    drawRectangle(width/2 - width/2*radio/3, height/2, width/2, height/2, width/2, height/2 - radio/3*height/4, width/2 - radio/3*width/2, height/2 - radio/3*height/4)
     ctx.stroke()
     ctx.beginPath()
     ctx.moveTo(width/2, height/2)
-    ctx.arc(width/2, height/2, height/2, Math.PI/2, Math.PI, false)
+    ctx.arc(width/2, height/2, height/2 * radio/3, Math.PI/2, Math.PI, false)
     ctx.stroke()
     ctx.fill()
 
@@ -80,12 +80,15 @@ function drawHit(x, y, r, transform ) {
 }
 
 function draw_hits_for_r(radio) {
-    draw()
+    const value = document.querySelector("input[type='radio']:checked").value
+    draw(value)
     let table = document.getElementById("results");
 
     for (let i = 1; i < table.rows.length; i++) {
         let cords = JSON.parse("[" + table.rows[i].cells[0].innerText + "]")
-        drawHit(cords[0], cords[1], radio, true)
+        if (cords[2] == value) {
+            drawHit(cords[0], cords[1], 3, true)
+        }
     }
 }
 
