@@ -6,26 +6,36 @@ import jakarta.inject.Inject
 import jakarta.inject.Named
 import java.io.Serializable
 import java.time.ZonedDateTime
+import kotlin.math.ceil
+import kotlin.math.round
 
 @Named
 @SessionScoped
-open class RequestBean: Serializable {
+open class RequestBean : Serializable {
     @Inject
     private lateinit var personalBean: PersonalBean
 
     private var x: Array<Float>? = null
     open fun getX() = x
-    open fun setX(value: Array<Float>) { x = value }
+    open fun setX(value: Array<Float>) {
+        x = value
+    }
 
     private var y: String? = null
     open fun getY() = y
-    open fun setY(value: String) { y = value }
+    open fun setY(value: String) {
+        y = value
+    }
 
     private var r: String? = "1"
     open fun getR() = r
-    open fun setR(value: String) { r = value }
+    open fun setR(value: String) {
+        r = value
+    }
 
-    open fun clearRecords() { personalBean.clearRecords() }
+    open fun clearRecords() {
+        personalBean.clearRecords()
+    }
 
     open fun applyHit() {
         if (x.isNullOrEmpty()) return
@@ -67,19 +77,29 @@ open class RequestBean: Serializable {
 
     companion object Checker {
         fun checkCircle(x: Float, y: Float, r: Float): HitResult {
-            return if (x*x + y*y <= r*r) HitResult.SUCCESS else HitResult.FAIL
+            return if (x * x + y * y <= r * r) HitResult.SUCCESS else HitResult.FAIL
         }
+
         fun checkTriangle(x: Float, y: Float, r: Float): HitResult {
             return if (x + y <= r) HitResult.SUCCESS else HitResult.FAIL
         }
+
         fun checkRectangle(x: Float, y: Float, r: Float): HitResult {
-            return if (y <= r/2) HitResult.SUCCESS else HitResult.FAIL
+            return if (y <= r / 2) HitResult.SUCCESS else HitResult.FAIL
         }
     }
 
     enum class HitResult(private val str: String) {
         SUCCESS("Hit"),
         FAIL("Miss");
+
         override fun toString() = str
     }
+
+    override fun toString(): String {
+        var number = x!![0] * 10;
+        return "Owner: " + "has a point X: " + round(number) / 10 + " Y: " + y.toString() + " " +
+                "Result: "+ y?.let { r?.let { it1 -> checkRanges(round(number) / 10, it.toFloat(), it1.toFloat()) } }
+    }
+
 }
