@@ -20,7 +20,7 @@ ext {
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
-tasks.withType(JavaCompile) {
+tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
@@ -59,6 +59,12 @@ dependencies {
     implementation("org.postgresql:postgresql:42.5.0")
 
     implementation("org.primefaces:primefaces:12.0.0:jakarta")
+}
+
+tasks.register("hello") {
+    doLast {
+        println("Hello world!")
+    }
 }
 
 test {
