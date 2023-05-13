@@ -1,5 +1,6 @@
 import beans.RequestBean
-import junit.framework.Assert.assertEquals
+import org.junit.jupiter.api.Assertions.assertEquals
+//import junit.framework.Assert.assertEquals
 import org.junit.jupiter.api.Test
 import kotlin.math.round
 
@@ -26,7 +27,7 @@ class Tests {
                 requestBean.getR()?.let { requestBean.checkRanges(i.toFloat(), j.toFloat(), it.toFloat()) }
                 var number = i * 10;
                 var result = "Owner: has a point X: ${round(number)/10} Y: $j Result: true"
-                
+
                 assertEquals(requestBean.toString(), result)
                 j += 0.1
             }
