@@ -13,6 +13,7 @@ import java.util.*
 @Named
 @SessionScoped
 open class PersonalBean: Serializable {
+    @Suppress("CdiUnproxyableBeanTypesInspection")
     @Inject
     private lateinit var connectBean: DataBaseBean
 
@@ -23,6 +24,7 @@ open class PersonalBean: Serializable {
 
     @PostConstruct
     private fun setConnection() {
+        @Suppress("UNCHECKED_CAST")
         records.addAll(connectBean.loadHits() as ArrayList<HitRecord>)
 //        val timer = Timer()
 //        val task: TimerTask = object : TimerTask() {

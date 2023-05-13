@@ -9,16 +9,10 @@ plugins {
 group 'com.lab3web'
 version '1.0-SNAPSHOT'
 
-repositories {
-    mavenCentral()
-}
+repositories { mavenCentral() }
 
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
-
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = 'UTF-8'
-}
 
 [compileKotlin, compileTestKotlin].forEach {
     it.kotlinOptions {
@@ -44,16 +38,49 @@ dependencies {
     implementation("org.primefaces:primefaces:12.0.0:jakarta")
 
     // Tests
-    testImplementation 'junit:junit:4.13'
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
     testImplementation("org.mockito:mockito-core:5.3.1")
     testRuntimeOnly('org.junit.vintage:junit-vintage-engine:5.9.2')
 }
 
-tasks.register("hello") {
-    doLast {
-        println("Hello world!")
+
+
+compileKotlin {
+    kotlinOptions {
+        jvmTarget = '1.8'
+        allWarningsAsErrors = true
     }
+}
+
+// Register commands
+
+tasks.register("compile_m") {
+    group "mispi_tasks"
+    buildDir = "build"
+    dependsOn(compileKotlin)
+    doLast {
+        println("Compiled kotlin into $buildDir")
+    }
+
+}
+
+tasks.register("build_m", War) {
+    group "mispi_tasks"
+    dependsOn(compile_m)
+    manifest {
+        "Manifest-Version: 1.0"
+    }
+    archiveBaseName = "deployment"
+    archiveAppendix = ""
+    archiveVersion = ""
+    doLast {
+        println("Build war package in $buildDir")
+    }
+}
+
+tasks.register("clean_m", Delete) {
+    group "mispi_tasks"
+    delete buildDir
 }
 
 test {

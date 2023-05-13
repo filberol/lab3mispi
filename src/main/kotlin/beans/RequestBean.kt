@@ -6,12 +6,12 @@ import jakarta.inject.Inject
 import jakarta.inject.Named
 import java.io.Serializable
 import java.time.ZonedDateTime
-import kotlin.math.ceil
 import kotlin.math.round
 
 @Named
 @SessionScoped
 open class RequestBean : Serializable {
+    @Suppress("CdiUnproxyableBeanTypesInspection")
     @Inject
     private lateinit var personalBean: PersonalBean
 
@@ -84,6 +84,7 @@ open class RequestBean : Serializable {
             return if (x + y <= r) HitResult.SUCCESS else HitResult.FAIL
         }
 
+        @Suppress("UNUSED_PARAMETER")
         fun checkRectangle(x: Float, y: Float, r: Float): HitResult {
             return if (y <= r / 2) HitResult.SUCCESS else HitResult.FAIL
         }
@@ -97,7 +98,7 @@ open class RequestBean : Serializable {
     }
 
     override fun toString(): String {
-        var number = x!![0] * 10;
+        val number = x!![0] * 10
         return "Owner: " + "has a point X: " + round(number) / 10 + " Y: " + y.toString() + " " +
                 "Result: "+ y?.let { r?.let { it1 -> checkRanges(round(number) / 10, it.toFloat(), it1.toFloat()) } }
     }
