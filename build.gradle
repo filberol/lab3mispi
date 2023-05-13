@@ -1,3 +1,5 @@
+import org.gradle.internal.xml.XmlValidation
+
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.6.20'
@@ -43,8 +45,6 @@ dependencies {
     testRuntimeOnly('org.junit.vintage:junit-vintage-engine:5.9.2')
 }
 
-
-
 compileKotlin {
     kotlinOptions {
         jvmTarget = '1.8'
@@ -81,6 +81,21 @@ tasks.register("build_m", War) {
 tasks.register("clean_m", Delete) {
     group "mispi_tasks"
     delete buildDir
+    doLast {
+        println("Clean bild directory")
+    }
+}
+
+tasks.register("music_m", Exec) {
+    group "mispi_tasks"
+    dependsOn(build_m)
+    // Platform dependency
+    commandLine {
+        "powershell -c (New-Object Media.SoundPlayer 'sound.wav').PlaySync();"
+    }
+    doLast {
+        println("Party time!")
+    }
 }
 
 test {
