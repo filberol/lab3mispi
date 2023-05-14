@@ -5,7 +5,6 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.20'
     id 'org.jetbrains.kotlin.plugin.allopen' version '1.6.20'
     id 'org.jetbrains.kotlin.plugin.noarg' version '1.6.20'
-    id("org.jetbrains.dokka") version "1.8.10"
     id 'war'
 }
 
@@ -42,6 +41,9 @@ dependencies {
 
     // Tests
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+
+    //GitLib
+//    classpath 'org.ajoberstar:gradle-git:1.6.0'
 
 }
 
@@ -86,14 +88,32 @@ tasks.register("clean_m", Delete) {
     }
 }
 
-tasks.register("music_m", Exec) {
+//tasks.register("music_m", Exec) {
+//    group "mispi_tasks"
+//    dependsOn(build_m)
+//    // Platform dependency
+//    commandLine {
+//        "powershell -c (New-Object Media.SoundPlayer 'sound.wav').PlaySync();"
+//    }
+//    doLast {
+//        println("Party time!")
+//    }
+//}
+
+
+tasks.register("commit", Exec){
+    commandLine 'powershell', '/c', 'git commit -m \'newReport\''
+}
+
+tasks.register("report", Exec) {
     group "mispi_tasks"
-    dependsOn { build_m }
-    // Platform dependency
-    commandLine 'powershell', '-c', '(New-Object Media.SoundPlayer "sound.wav").PlaySync();'
-    doLast {
-        println("Party time!")
-    }
+    dependsOn(test)
+
+    commandLine 'cmd', '/c', 'git add src/test/test-junit-xml/'
+//    exec { executable = "cmd" args = "/C", "echo Hello World" }
+//    commandLine 'cmd', '/c', 'git commit -m "Added report JUnit" '
+//    commandLine 'cmd', '/c', 'git commit -a'
+    dependsOn(commit)
 }
 
 tasks.register("xml_m") {
@@ -126,6 +146,10 @@ tasks.register("doc_m") {
 }
 
 test {
+    group "mispi_tasks"
     useJUnitPlatform()
     testLogging.showStandardStreams = true
+    reports {
+        junitXml.outputLocation.set(layout.buildDirectory.dir("../src/test/test-junit-xml"))
+    }
 }
