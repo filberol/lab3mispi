@@ -40,10 +40,6 @@ dependencies {
 
     // Tests
     testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
-
-    //GitLib
-//    classpath 'org.ajoberstar:gradle-git:1.6.0'
-
 }
 
 compileKotlin {
@@ -58,7 +54,9 @@ compileKotlin {
 tasks.register("compile_m") {
     group "mispi_tasks"
     buildDir = "build"
-    dependsOn(compileKotlin)
+    dependsOn {
+        compileKotlin
+    }
     doLast {
         println("Compiled kotlin into $buildDir")
     }
@@ -67,7 +65,9 @@ tasks.register("compile_m") {
 
 tasks.register("build_m", War) {
     group "mispi_tasks"
-    dependsOn { compile_m }
+    dependsOn {
+        compile_m
+    }
     manifest {
         "Manifest-Version: 1.0"
     }
@@ -105,8 +105,10 @@ tasks.register("stage_test", Exec){
 
 tasks.register("report_m", Exec) {
     group "mispi_tasks"
-    dependsOn { test }
-    dependsOn { stage_test }
+    dependsOn {
+        test
+        stage_test
+    }
     commandLine 'powershell', '-c', "git commit -m 'Junit Report $version'"
 }
 
@@ -135,8 +137,10 @@ tasks.register("doc_m") {
                 forceoverwrite: 'true'
         )
     }
-    dependsOn { xml_m }
-    dependsOn { dokkaHtml }
+    dependsOn {
+        xml_m
+        dokkaHtml
+    }
 }
 
 tasks.register("test_m", Test) {
@@ -148,9 +152,11 @@ tasks.register("test_m", Test) {
     }
 }
 
-tasks.register("spc") {
+tasks.register("scp") {
     group "mispi_tasks"
-    dependsOn(build_m)
+    dependsOn {
+        build_m
+    }
     doLast {
         exec {
             workingDir '.'
