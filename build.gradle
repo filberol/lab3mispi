@@ -97,19 +97,17 @@ tasks.register("music_m", Exec) {
     }
 }
 
-tasks.register("commit", Exec){
-    commandLine 'powershell', '/c', 'git commit -m \'newReport\''
+tasks.register("stage_test", Exec){
+    group "git_utils"
+    workingDir "."
+    commandLine 'powershell', '-c', 'git add src/test/test-junit-xml/TEST-Tests.xml'
 }
 
-tasks.register("report", Exec) {
+tasks.register("report_m", Exec) {
     group "mispi_tasks"
-    dependsOn(test)
-
-    commandLine 'cmd', '/c', 'git add src/test/test-junit-xml/'
-//    exec { executable = "cmd" args = "/C", "echo Hello World" }
-//    commandLine 'cmd', '/c', 'git commit -m "Added report JUnit" '
-//    commandLine 'cmd', '/c', 'git commit -a'
-    dependsOn(commit)
+    dependsOn { test }
+    dependsOn { stage_test }
+    commandLine 'powershell', '-c', "git commit -m 'Junit Report $version'"
 }
 
 tasks.register("xml_m") {
