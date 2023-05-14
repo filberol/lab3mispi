@@ -1,10 +1,9 @@
-import org.gradle.internal.xml.XmlValidation
-
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.6.20'
     id 'org.jetbrains.kotlin.plugin.allopen' version '1.6.20'
     id 'org.jetbrains.kotlin.plugin.noarg' version '1.6.20'
+    id("org.jetbrains.dokka") version "1.8.10"
     id 'war'
 }
 
@@ -88,18 +87,15 @@ tasks.register("clean_m", Delete) {
     }
 }
 
-//tasks.register("music_m", Exec) {
-//    group "mispi_tasks"
-//    dependsOn(build_m)
-//    // Platform dependency
-//    commandLine {
-//        "powershell -c (New-Object Media.SoundPlayer 'sound.wav').PlaySync();"
-//    }
-//    doLast {
-//        println("Party time!")
-//    }
-//}
-
+tasks.register("music_m", Exec) {
+    group "mispi_tasks"
+    dependsOn { build_m }
+    // Platform dependency
+    commandLine 'powershell', '-c', '(New-Object Media.SoundPlayer "sound.wav").PlaySync();'
+    doLast {
+        println("Party time!")
+    }
+}
 
 tasks.register("commit", Exec){
     commandLine 'powershell', '/c', 'git commit -m \'newReport\''
@@ -145,7 +141,7 @@ tasks.register("doc_m") {
     dependsOn { dokkaHtml }
 }
 
-test {
+tasks.register("test_m", Test) {
     group "mispi_tasks"
     useJUnitPlatform()
     testLogging.showStandardStreams = true
