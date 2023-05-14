@@ -5,6 +5,7 @@ plugins {
     id 'org.jetbrains.kotlin.jvm' version '1.6.20'
     id 'org.jetbrains.kotlin.plugin.allopen' version '1.6.20'
     id 'org.jetbrains.kotlin.plugin.noarg' version '1.6.20'
+    id("org.jetbrains.dokka") version "1.8.10"
     id 'war'
 }
 
@@ -65,7 +66,7 @@ tasks.register("compile_m") {
 
 tasks.register("build_m", War) {
     group "mispi_tasks"
-    dependsOn(compile_m)
+    dependsOn { compile_m }
     manifest {
         "Manifest-Version: 1.0"
     }
@@ -87,14 +88,41 @@ tasks.register("clean_m", Delete) {
 
 tasks.register("music_m", Exec) {
     group "mispi_tasks"
-    dependsOn(build_m)
+    dependsOn { build_m }
     // Platform dependency
-    commandLine {
-        "powershell -c (New-Object Media.SoundPlayer 'sound.wav').PlaySync();"
-    }
+    commandLine 'powershell', '-c', '(New-Object Media.SoundPlayer "sound.wav").PlaySync();'
     doLast {
         println("Party time!")
     }
+}
+
+tasks.register("xml_m") {
+    group "mispi_tasks"
+    doLast {
+        ant.xmlvalidate(lenient:true, failonerror:true, warn:true) {
+            fileset(
+                    dir: project.projectDir
+            ) {
+                include(name: '**/*.xml')
+                exclude(name: 'build/**')
+            }
+        }
+    }
+}
+
+tasks.register("doc_m") {
+    group "mispi_tasks"
+    dependsOn { build_m }
+    doFirst {
+        ant.checksum(
+                file:"$buildDir/libs/deployment.war",
+                algorithm:'SHA1',
+                fileext:'.sha1',
+                forceoverwrite: 'true'
+        )
+    }
+    dependsOn { xml_m }
+    dependsOn { dokkaHtml }
 }
 
 test {
