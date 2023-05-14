@@ -97,7 +97,7 @@ tasks.register("music_m", Exec) {
     }
 }
 
-tasks.register("commit", Exec){
+tasks.register("commit", Exec) {
     commandLine 'powershell', '/c', 'git commit -m \'newReport\''
 }
 
@@ -115,7 +115,7 @@ tasks.register("report", Exec) {
 tasks.register("xml_m") {
     group "mispi_tasks"
     doLast {
-        ant.xmlvalidate(lenient:true, failonerror:true, warn:true) {
+        ant.xmlvalidate(lenient: true, failonerror: true, warn: true) {
             fileset(
                     dir: project.projectDir
             ) {
@@ -131,9 +131,9 @@ tasks.register("doc_m") {
     dependsOn { build_m }
     doFirst {
         ant.checksum(
-                file:"$buildDir/libs/deployment.war",
-                algorithm:'SHA1',
-                fileext:'.sha1',
+                file: "$buildDir/libs/deployment.war",
+                algorithm: 'SHA1',
+                fileext: '.sha1',
                 forceoverwrite: 'true'
         )
     }
@@ -147,5 +147,16 @@ tasks.register("test_m", Test) {
     testLogging.showStandardStreams = true
     reports {
         junitXml.outputLocation.set(layout.buildDirectory.dir("../src/test/test-junit-xml"))
+    }
+}
+
+tasks.register("spc") {
+    group "mispi_tasks"
+    dependsOn(build_m)
+    doLast {
+        exec {
+            workingDir '.'
+            commandLine 'cmd', '/c', 'scp -P' ${ssh_port} 'build/libs/deployment.war '${ssh_username}'@'${ssh_host}':~'
+        }
     }
 }
