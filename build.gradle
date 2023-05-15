@@ -1,6 +1,8 @@
 plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.6.20'
+//    id 'org.jetbrains.kotlin.multiplatform' version '1.8.21'
+
     id 'org.jetbrains.kotlin.plugin.allopen' version '1.6.20'
     id 'org.jetbrains.kotlin.plugin.noarg' version '1.6.20'
     id("org.jetbrains.dokka") version "1.8.10"
@@ -11,15 +13,6 @@ group 'com.lab3web'
 version '1.0-SNAPSHOT'
 
 repositories { mavenCentral() }
-
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
-
-[compileKotlin, compileTestKotlin].forEach {
-    it.kotlinOptions {
-        jvmTarget = '1.8'
-    }
-}
 
 dependencies {
     // Jpa
@@ -39,13 +32,13 @@ dependencies {
     implementation("org.primefaces:primefaces:12.0.0:jakarta")
 
     // Tests
-    testImplementation("org.junit.jupiter:junit-jupiter:5.8.2")
+    testImplementation('org.junit.jupiter:junit-jupiter:5.9.2')
 }
 
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = '1.8'
-        allWarningsAsErrors = true
+[compileKotlin, compileTestKotlin].forEach {
+    it.kotlinOptions {
+        jvmTarget = jvm_target
+        allWarningsAsErrors = all_as_errors
     }
 }
 
@@ -110,6 +103,9 @@ tasks.register("report_m", Exec) {
         stage_test
     }
     commandLine 'powershell', '-c', "git commit -m 'Junit Report $version'"
+    doLast  {
+        println("Generated and comminted Junit Report for version $version")
+    }
 }
 
 tasks.register("xml_m") {
@@ -131,7 +127,7 @@ tasks.register("doc_m") {
     dependsOn { build_m }
     doFirst {
         ant.checksum(
-                file: "$buildDir/libs/deployment.war",
+                file: "$buildDir/libs/$depl_name",
                 algorithm: 'SHA1',
                 fileext: '.sha1',
                 forceoverwrite: 'true'
@@ -145,6 +141,9 @@ tasks.register("doc_m") {
 
 tasks.register("test_m", Test) {
     group "mispi_tasks"
+    doFirst {
+        println("Processing tests for version $version...")
+    }
     useJUnitPlatform()
     testLogging.showStandardStreams = true
     reports {
@@ -152,7 +151,7 @@ tasks.register("test_m", Test) {
     }
 }
 
-tasks.register("scp") {
+tasks.register("scp_m") {
     group "mispi_tasks"
     dependsOn {
         build_m
@@ -160,7 +159,19 @@ tasks.register("scp") {
     doLast {
         exec {
             workingDir '.'
-            commandLine 'cmd', '/c', 'scp -P' ${ssh_port} 'build/libs/deployment.war '${ssh_username}'@'${ssh_host}':~'
+            commandLine 'powershell', '-c', "scp -P $ssh_port build/libs/$depl_name $ssh_username@$ssh_host:~"
         }
+    }
+    doLast {
+        println("Deployed ")
+    }
+}
+
+tasks.register("env_m") {
+    group "mispi_tasks"
+    targetCompatibility = alt_jvm_target
+    dependsOn { build_m }
+    doLast {
+        println("Built env 'war' for jvm_version $alt_jvm_target")
     }
 }
