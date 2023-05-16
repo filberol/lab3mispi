@@ -89,7 +89,7 @@ tasks.register("music_m", Exec) {
     }
 }
 
-tasks.register("stage_test", Exec){
+tasks.register("stage_test", Exec) {
     group "git_utils"
     workingDir "."
     commandLine 'powershell', '-c', 'git add src/test/test-junit-xml/TEST-Tests.xml'
@@ -102,7 +102,7 @@ tasks.register("report_m", Exec) {
         stage_test
     }
     commandLine 'powershell', '-c', "git commit -m 'Junit Report $version'"
-    doLast  {
+    doLast {
         println("Generated and comminted Junit Report for version $version")
     }
 }
@@ -220,3 +220,29 @@ tasks.register("team_m", Zip) {
         println("Created archive.")
     }
 }
+
+tasks.register("alt_m") {
+    group "mispi_tasks"
+    project.mkdir "${altSrc}${altPackage}"
+    copy {
+        from "${src}${packagee}"
+        include "*"
+        include "**/*.kt"
+        include "**/**/*"
+        into "${altSrc}${altPackage}"
+        filter {
+            String line -> line.replaceAll("altSrc/altMain/kotlin/HitRecord.kt", "altSrc/altMain/kotlin/HitRecord_m.kt")
+        }
+    }
+    copy {
+        from "${test}"
+        include "*"
+        into "${altTest}"
+    }
+    ant.replaceregexp(file: "${altSrc}${altPackage}/kotlin/beans/RequestBean.kt", match: 'personalBean', replace: 'personalBean_m', flags: 'g', byline: true)
+    ant.replaceregexp(file: "${altSrc}${altPackage}/kotlin/beans/PersonalBean.kt", match: 'connectBean', replace: 'connectBean_m', flags: 'g', byline: true)
+    dependsOn(build_m)
+}
+
+
+
