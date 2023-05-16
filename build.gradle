@@ -175,14 +175,16 @@ tasks.register("env_m") {
     }
 }
 
-1.times {offHead ->
+2.times {offHead ->
     tasks.register("checkout_off_$offHead", Exec) {
+        group "git_utils"
         commandLine 'powershell', '-c', "git checkout HEAD^-$offHead"
     }
 }
 
-["first", "second"].forEach { num ->
+2.times { num ->
     tasks.register("copy_deployment_$num", Copy) {
+        group "git_utils"
         dependsOn {
             build_m
         }
@@ -194,7 +196,7 @@ tasks.register("env_m") {
 tasks.register("team_m") {
     group "mispi_tasks"
     dependsOn {
-        copy_deployment_first
-        copy_deployment_second
+        copy_deployment_0
+        copy_deployment_1
     }
 }
