@@ -196,10 +196,27 @@ tasks.register("env_m") {
     }
 }
 
-tasks.register("team_m") {
+tasks.register("collect_deployments") {
+    group "git_utils"
+    dependsOn {
+        copy_deployment_1
+        copy_deployment_0
+    }
+    doLast {
+        println("Built and collected deployments.")
+    }
+}
+
+tasks.register("team_m", Zip) {
     group "mispi_tasks"
     dependsOn {
-        copy_deployment_0
-        copy_deployment_1
+        collect_deployments
+    }
+    from("deployments")
+    into("archives")
+    archiveBaseName = "archived_deploys"
+    includeEmptyDirs = true
+    doLast {
+        println("Created archive.")
     }
 }
