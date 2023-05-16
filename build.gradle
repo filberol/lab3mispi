@@ -175,21 +175,24 @@ tasks.register("env_m") {
     }
 }
 
-2.times {offHead ->
-    tasks.register("checkout_off_$offHead", Exec) {
+["master", "-"].eachWithIndex { branch, num ->
+    tasks.register("checkout_$num", Exec) {
         group "git_utils"
-        commandLine 'powershell', '-c', "git checkout HEAD^-$offHead"
+        commandLine 'powershell', '-c', "git checkout $branch"
     }
 }
 
-2.times { num ->
+["master", "-"].eachWithIndex { branch, num ->
     tasks.register("copy_deployment_$num", Copy) {
         group "git_utils"
         dependsOn {
-            build_m
+            "checkout_$num"
         }
         from("$buildDir/libs/$depl_name")
         into("deployments/$num")
+        finalizedBy {
+            build_m
+        }
     }
 }
 
