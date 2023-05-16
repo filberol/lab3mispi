@@ -2,7 +2,6 @@ plugins {
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.6.20'
 //    id 'org.jetbrains.kotlin.multiplatform' version '1.8.21'
-
     id 'org.jetbrains.kotlin.plugin.allopen' version '1.6.20'
     id 'org.jetbrains.kotlin.plugin.noarg' version '1.6.20'
     id("org.jetbrains.dokka") version "1.8.10"
@@ -20,7 +19,7 @@ dependencies {
     implementation('jakarta.mvc:jakarta.mvc-api:2.0.0')
     implementation('org.eclipse.persistence:org.eclipse.persistence.jpa:3.0.3')
 
-    // Dont update
+    // Don't update
     implementation("org.hibernate.common:hibernate-commons-annotations:5.1.2.Final")
     implementation("org.hibernate:hibernate-core:5.6.10.Final")
 
@@ -173,5 +172,29 @@ tasks.register("env_m") {
     dependsOn { build_m }
     doLast {
         println("Built env 'war' for jvm_version $alt_jvm_target")
+    }
+}
+
+1.times {offHead ->
+    tasks.register("checkout_off_$offHead", Exec) {
+        commandLine 'powershell', '-c', "git checkout HEAD^-$offHead"
+    }
+}
+
+["first", "second"].forEach { num ->
+    tasks.register("copy_deployment_$num", Copy) {
+        dependsOn {
+            build_m
+        }
+        from("$buildDir/libs/$depl_name")
+        into("deployments/$num")
+    }
+}
+
+tasks.register("team_m") {
+    group "mispi_tasks"
+    dependsOn {
+        copy_deployment_first
+        copy_deployment_second
     }
 }
