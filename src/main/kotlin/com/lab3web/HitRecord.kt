@@ -1,3 +1,5 @@
+package com.lab3web
+
 import jakarta.persistence.*
 import java.io.Serializable
 import java.time.ZonedDateTime

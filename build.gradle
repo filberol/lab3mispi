@@ -52,7 +52,6 @@ tasks.register("compile_m") {
     doLast {
         println("Compiled kotlin into $buildDir")
     }
-
 }
 
 tasks.register("build_m", War) {
@@ -230,9 +229,6 @@ tasks.register("alt_m") {
         include "**/*.kt"
         include "**/**/*"
         into "${altSrc}${altPackage}"
-        filter {
-            String line -> line.replaceAll("altSrc/altMain/kotlin/HitRecord.kt", "altSrc/altMain/kotlin/HitRecord_m.kt")
-        }
     }
     copy {
         from "${test}"
@@ -243,6 +239,4 @@ tasks.register("alt_m") {
     ant.replaceregexp(file: "${altSrc}${altPackage}/kotlin/beans/PersonalBean.kt", match: 'connectBean', replace: 'connectBean_m', flags: 'g', byline: true)
     dependsOn(build_m)
 }
-
-
 

@@ -6,7 +6,7 @@
     <persistence-unit name="LabPU">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <jta-data-source>java:/LabDS</jta-data-source>
-        <class>HitRecord</class>
+        <class>com.lab3web.HitRecord</class>
         <properties>
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.format_sql" value="true" />

@@ -1,6 +1,6 @@
-package beans
+package com.lab3web.beans
 
-import HitRecord
+import com.lab3web.HitRecord
 import jakarta.enterprise.context.SessionScoped
 import jakarta.inject.Inject
 import jakarta.inject.Named

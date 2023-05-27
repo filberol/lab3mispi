@@ -1,4 +1,4 @@
-import beans.RequestBean
+import com.lab3web.beans.RequestBean
 import org.junit.jupiter.api.Assertions.assertEquals
 //import junit.framework.Assert.assertEquals
 import org.junit.jupiter.api.Test

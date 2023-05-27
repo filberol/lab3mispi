@@ -1,6 +1,6 @@
-package beans
+package com.lab3web.beans
 
-import HitRecord
+import com.lab3web.HitRecord
 import jakarta.annotation.PostConstruct
 import jakarta.enterprise.context.ApplicationScoped
 import jakarta.inject.Named

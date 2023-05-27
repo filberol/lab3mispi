@@ -1,4 +1,4 @@
-package beans
+package com.lab3web.beans
 
 import jakarta.enterprise.context.RequestScoped
 import jakarta.faces.application.FacesMessage
